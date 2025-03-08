@@ -1,0 +1,41 @@
+name: .NET continuous integration
+description: Build and test your .NET project
+author: brianary
+# https://haya14busa.github.io/github-action-brandings/
+branding:
+  icon: check-circle
+  color: blue
+inputs:
+  dotnet-version:
+    description: "The .NET SDK version to use to build. Defaults to the current LTS version. Examples: 8.0.x, 9.0.x"
+    default: 8.0.x
+  test-target:
+    description: A project target to build. If not specified, `dotnet test` will be run instead.
+    default: ''
+  test-results:
+    description: "The location of the test results file(s). Empty to skip. Default: testResults.xml."
+    default: testResults.xml
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+    - name: Build target
+      if: ${{ inputs.test-target }}
+      env:
+        TARGET: ${{ inputs.test-target }}
+      shell: bash
+      run: dotnet build -t:$TARGET
+    - name: Test
+      if: ${{ !inputs.test-target }}
+      shell: bash
+      run: dotnet test
+    - name: Publish results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: ${{ inputs.test-results }}
+      with:
+        files: ${{ inputs.test-results }}

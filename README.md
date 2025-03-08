@@ -1,0 +1,29 @@
+.NET continuous integration
+===========================
+
+Build and test your .NET project
+
+Usage
+-----
+
+```yaml
+name: .NET build and test
+on: push
+jobs:
+  continuous-integration:
+    name: Build and test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+          os: [ubuntu-latest, windows-latest]
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+    steps:
+      - name: .NET CI
+        uses: brianary/dotnet-ci@v1
+        with:
+          test-target: Test
+```
