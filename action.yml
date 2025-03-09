@@ -24,7 +24,7 @@ runs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
-    - name: Build target
+    - name: Build targetf
       if: ${{ inputs.test-target }}
       env:
         TARGET: ${{ inputs.test-target }}
