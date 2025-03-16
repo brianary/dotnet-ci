@@ -35,7 +35,7 @@ runs:
       shell: bash
       run: dotnet test
     - name: Publish results (Ubuntu)
-      uses: EnricoMi/publish-unit-test-result-action@v2
+      uses: EnricoMi/publish-unit-test-result-action/linux@v2
       if: ${{ matrix.os == 'ubuntu-latest' && inputs.test-results }}
       with:
         files: ${{ inputs.test-results }}
